@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>云存储管理系统</title>
+<script type="text/javascript" src="/static/scripts/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="/static/scripts/socketclient.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/styles/style2.css" />
+<link type="text/css" rel="stylesheet" href="/static/styles/slide1.css"/>
+<link rel="stylesheet" type="text/css" href="/static/styles/menu.css">
+<script type="text/javascript">
+    $(function () {
+        $('.slides_ul li:odd').css("background-color", "#f1f1f1"); //菜单栏隔行变色
+        //jquery 链式操作 点击事件
+        $('.menu').click(function () {
+            // jQ slideToggle方法 段落滑上或滑下,stop():停止当前正在运行的动画
+            $(this).siblings('.selectSlide').stop().slideToggle(200);
+            if($(this).hasclass("close"))
+            {
+                $(this).removeClass("close").addClass("on");
+            }
+            else
+            {
+                $(this).removeClass("on").addClass("close");
+            }
+        });
+
+        $('#showall').click(function () {
+            $('.selectSlide').stop().slideDown();//jQ slideDown() 段落滑下
+            $('.menu').removeClass("close").addClass("on");
+            $(this).removeClass("span1").addClass("span1on");
+            $('#closeall').removeClass("span2").addClass("span2on");
+
+        });
+        $('#closeall').click(function () {
+            $('.selectSlide').stop().slideUp();
+            $('.menu').removeClass("on").addClass("close");
+            $(this).removeClass("span2on").addClass("span2");
+            $('#showall').removeClass("span1on").addClass("span1");
+        });
+        $('.slides_ul li').mousemove(function () {
+            $('.menu_over').eq($(this).index()).show().siblings('.menu_over').hide();
+        });
+        $('.slides').mouseleave(function(){
+            $('.menu_over').hide();
+        });
+    });
+
+</script>
+<script type="text/javascript">
+function fnDeleteXLRow(){ 
+var objDiv = document.getElementById("createtable");
+var vtables = objDiv.childNodes; 
+if (vtables.length > 0)
+objDiv.removeChild(vtables[vtables.length - 1]);
+} 
+$(document).ready(function () {
+var client = new SocketClient("192.168.2.183",32013,"chat");
+
+client.connect();
+
+client.onData  = function(text) {
+    console.log(text);
+    //alert(text);
+//var values="[[1,2,3,4],[1,2,3,4],[5,6,7,8],[1,2,3,4]]";
+var objs=eval(text);
+fnDeleteXLRow();
+		
+	var table=$("<table border=\"1\">");
+	 table.appendTo($("#createtable"));
+	var tr=$("<tr></tr>");
+	tr.appendTo(table);
+	 var th=$("<td>"+'节点IP'+"</td>");
+	th.appendTo(tr);
+	var th=$("<td>"+'容量使用百分比'+"</td>");
+	th.appendTo(tr);
+	var th=$("<td>"+'CPU利用率'+"</td>");
+	th.appendTo(tr);
+	var th=$("<td>"+'内存利用率'+"</td>");
+	th.appendTo(tr);
+	 for(var i=0;i<objs.length;i++)
+	 { 
+		var u = objs[i];
+	    var tr=$("<tr></tr>");
+		tr.appendTo(table);
+		for(var j=0;j<4;j++)
+		{
+			var td=$("<td>"+u[j]+"</td>");
+			td.appendTo(tr);
+		}
+	 }
+	 //trend.appendTo(table);
+	 $("#createtable").append("</table>");
+}
+
+client.onRegist = function() {
+    this.sendData("web message");
+}
+});
+</script>
+<style type="text/css">
+<!--
+.STYLE1 {color: #FFFFFF}
+.STYLE2 {color: #0033FF}
+-->
+</style>
+</head>
+
+<body>
+<!--头文件开始-->
+ {% include 'header.html' %}
+<!--头文件结束-->
+
+<div class="nr">
+<div class="left">
+    <div class="topTitle">
+        <span class="STYLE2">资源监控</span>
+    </div>
+    <!-- 菜单部分 -->
+    <div class="slides_center">
+        <ul class="slides_ul">
+            <li>
+                <a href="/rm_cluster/" class="menu first close">系统监控</a>
+            </li>
+			  <li>
+                <a href="/rm_nodes/" class="menu first close" style="text-decoration: underline;">节点监控</a>
+            </li>
+        </ul>
+    </div>
+    <!-- 右边菜单 -->
+</div>
+<div class="tabCon">  
+<div id="tabCon1">
+<div class="target">
+<div class="caption"><span>在线节点信息</span></div>
+<div class="clear"></div>
+<table id="createtable">
+</table>
+
+
+
+</div>
+    </div>  
+<!--<div id="tabCon2" style="display:none">&nbsp;</div>  
+    <div id="tabCon3" style="display:none">&nbsp;</div>  
+    <div id="tabCon4" style="display:none">&nbsp;</div>-->   
+</div>
+</div>
+
+
+
+
+<!--主体部分结束-->
+
+</div>
+
+
+<!--底部开始-->
+{% include 'bottom.html' %}
+<!--底部结束-->
+</body>
+</html>

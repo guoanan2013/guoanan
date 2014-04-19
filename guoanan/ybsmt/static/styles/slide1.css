@@ -1,0 +1,121 @@
+
+
+.topTitle {
+    width: 200px;
+    height: 30px;
+    background: url("../images/left.png");
+}
+
+.topTitle span {
+    height: 30px;
+    line-height: 30px;
+    padding-left: 10px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    display: inline-block;
+    float: left;
+}
+
+.slides_center {
+    width: 200px;
+    height: 450px;
+    overflow: auto;
+}
+
+.slides_ul {
+}
+
+.menu {
+    padding-left: 34px;
+    line-height: 34px;
+    height: 34px;
+    font-weight: bold;
+    cursor: pointer;
+    display: block;
+}
+
+.first {
+   /* background: url("../images/ICON.gif") no-repeat;*/
+}
+
+.close {
+    background-position: 5px -37px;
+}
+
+.on {
+    background-position: 5px 6px;
+}
+
+.selectSlide {
+    width: 140px;
+    padding:0px 10px 10px 36px;
+}
+
+.selectSlide span {
+    display: inline-block;
+    line-height: 20px;
+}
+
+.selectSlide span a {
+    color: #000;
+    text-decoration: none;
+}
+
+.selectSlide span a:hover {
+    text-decoration: underline;
+}
+
+.hide {
+    display: none;
+}
+
+.topmenu {
+    width: 70px;
+    float: right;
+    height: 30px;
+    line-height: 30px;
+}
+
+.topmenu span {
+    width: 14px;
+    height: 30px;
+    display: inline-block;
+    cursor: pointer;
+    background: url(../images/topmenu.jpg) no-repeat;
+}
+
+.topmenu .span1 {
+    background-position: -5px -32px;
+}
+
+.topmenu .span1on {
+    background-position: -5px 2px;
+}
+
+.topmenu .span2 {
+    background-position: -28px -32px;
+}
+
+.topmenu .span2on {
+    background-position: -28px 2px;
+}
+
+.menu_over {
+    background-color: #fff;
+    position: absolute;
+    min-width: 600px;
+    _width: 600px;
+    min-height: 400px;
+    _height: 400px;
+    overflow: auto;
+    border: 1px solid #DFDFDF;
+    box-shadow: 3px 3px 10px #878787;
+    left: 200px;
+    top: 26px;
+}
+.menu_over h3{
+    padding:0 0 10px 20px;
+    border-bottom: 1px solid #ccc;
+    _padding-top:10px;
+}

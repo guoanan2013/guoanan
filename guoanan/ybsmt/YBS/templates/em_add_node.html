@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>云存储管理系统</title>
+<script type="text/javascript" src="/static/scripts/jquery-1.8.0.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/styles/style2.css" />
+<link type="text/css" rel="stylesheet" href="/static/styles/slide.css"/>
+<link type="text/css" rel="stylesheet" href="/static/styles/input.css"/>
+<link rel="stylesheet" type="text/css" href="/static/styles/menu.css">
+<script type="text/javascript">
+    $(function () {
+	 //左侧导航伸缩
+        $('.slides_ul li:odd').css("background-color", "#f1f1f1"); //菜单栏隔行变色
+        //jquery 链式操作 点击事件
+        $('.menu').click(function () {
+            // jQ slideToggle方法 段落滑上或滑下,stop():停止当前正在运行的动画
+            $(this).siblings('.selectSlide').stop().slideToggle(200);
+            if($(this).hasclass("close"))
+            {
+                $(this).removeClass("close").addClass("on");
+            }
+            else
+            {
+                $(this).removeClass("on").addClass("close");
+            }
+        });
+
+        $('#showall').click(function () {
+            $('.selectSlide').stop().slideDown();//jQ slideDown() 段落滑下
+            $('.menu').removeClass("close").addClass("on");
+            $(this).removeClass("span1").addClass("span1on");
+            $('#closeall').removeClass("span2").addClass("span2on");
+
+        });
+        $('#closeall').click(function () {
+            $('.selectSlide').stop().slideUp();
+            $('.menu').removeClass("on").addClass("close");
+            $(this).removeClass("span2on").addClass("span2");
+            $('#showall').removeClass("span1on").addClass("span1");
+        });
+        $('.slides_ul li').mousemove(function () {
+            $('.menu_over').eq($(this).index()).show().siblings('.menu_over').hide();
+        });
+        $('.slides').mouseleave(function(){
+            $('.menu_over').hide();
+        });
+{% if error_info %}
+        alert("{{  error_info }}")；
+{% endif %}
+    });
+</script>
+<script type="text/javascript">
+function jsaddnode(){
+var ip = document.getElementById("ip").value;
+
+var re=/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/;//正则表达式     
+if(re.test(ip))     
+{     
+   if( RegExp.$1<256 && RegExp.$2<256 && RegExp.$3<256 && RegExp.$4<256){  
+	   var str = '{% url "em_add_node_action" %}?ip=' +ip;
+		var req = new XMLHttpRequest();
+		req.open("GET", str);
+		req.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+		req.onreadystatechange = function(){
+		if(req.readyState == 4 || req.readyState == 200){
+		var a = eval('['+req.responseText+']')[0];
+		alert(a);}} 
+		req.send(null); 
+		EV_closeAlert(); 
+   }
+	else{
+		alert("IP输入错误！");
+		EV_closeAlert();   
+	}   
+} 
+else{    
+   alert("IP输入错误！");
+   EV_closeAlert();   
+   }
+} 
+function clear(){
+document.getElementById("ip").value="";
+} 
+</script>
+</head>
+
+<body>
+<!--头文件开始-->
+ {% include 'header.html' %}
+<!--头文件结束-->
+
+
+<!--主体部分开始-->
+<div class="nr">
+<!--左侧导航开始-->
+<div class="left">
+    <div class="topTitle">
+        <span class="STYLE2">设备管理</span>
+    </div>
+    <div class="slides_center">
+        <ul class="slides_ul">
+            <li>
+                <a class="menu first close">节点管理</a>
+
+                <div class="selectSlide">
+                    <span><a href="/em_nodes/" class="none">节点状态</a></span>
+                </div>
+				 <div class="selectSlide">
+					<span><a href="/em_add_node/" style="text-decoration: underline;" class="none">添加节点</a></span>
+				</div>
+                <div class="selectSlide">
+                    <span><a href="/em_zone/" class="none">区域配置</a></span>
+                </div>
+            </li>
+			<li>
+                <a class="menu first close">集群管理</a>
+				 <div class="selectSlide hide">
+					<span><a href="/em_cluster/" class="none">缓存配置</a></span>
+				</div>
+			    <div class="selectSlide hide">
+					<span><a href="/em_shutdown/" class="none">关闭集群</a></span>
+				</div>
+            </li>
+
+        </ul>
+    </div>
+</div>
+<!--左侧导航结束-->
+<div class="tabCon">  
+<div id="tabCon1">
+<div class="target">
+<div class="caption"><span>添加节点</span></div>
+<div class="clear"></div>
+<ol id="need">
+<li><label class="td1">目标器节点IP:&nbsp;</label><input name="ip" id="ip" type="text" maxlength=16  onkeyup="value=value.replace(/[^\d\.]/g,'')"/><dfn>（正确的IPv4格式）</dfn></li>
+<li><a href="javascript:clear()">取消</a><a href="javascript:jsaddnode()" class="none">确定</a></li>
+</ol>
+</div>
+    </div>  
+<!--<div id="tabCon2" style="display:none">&nbsp;</div>  
+    <div id="tabCon3" style="display:none">&nbsp;</div>  
+    <div id="tabCon4" style="display:none">&nbsp;</div>-->   
+</div>
+</div>
+
+
+
+
+<!--主体部分结束-->
+
+
+<!--底部开始-->
+{% include 'bottom.html' %}
+<!--底部结束-->
+</body>
+</html>

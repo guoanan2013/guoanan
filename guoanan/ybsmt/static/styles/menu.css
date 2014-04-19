@@ -1,0 +1,24 @@
+#navmenu{
+	height: 43px;
+	margin-left: 296px;
+	font-size: 16px;
+	font-weight: bold;
+	padding-top: 62px;
+	float: left;
+	display: inline;
+}
+#navmenu li{display:block;position:relative;float:left;border-top:0;border-left:1px solid #454545;border-bottom:0;border-right:1px solid #151515;xheight:18px;}
+#navmenu li a{text-shadow:1px 1px 1px black;display:block;padding:8px 18px;color:#fff;text-decoration:none;white-space:nowrap;}
+#navmenu li a:hover{padding-top:5px;border-top:3px solid #ff0000;}
+.newSash{position:relative;}
+.newSash .newSashSpan{background:url("newSashRed.gif") top left no-repeat;width:26px;height:26px;position:absolute;top:-1px;right:0;}
+.downArrow{display:block;border-color:#fff transparent transparent transparent;border-style:solid;border-width:3px;height:0;width:0;position:absolute;top:16px;right:8px;_border:none;}
+
+#navmenu div{position: absolute;visibility: hidden;	padding: 0;margin-left:-1px;margin-top:2px;	background: #313131;border:1px solid #222;	font-size: 12px;}
+#navmenudiv a{position: relative;display: block;margin: 0;padding: 8px 10px;border-bottom:1px solid #fff;width: auto;white-space: nowrap;text-align: left;		text-decoration: none;background: #666;color: #fff;}
+#navmenu div a:hover{background: #222;border-top:none;border-left:3px solid #ff0000;color: #FFF;padding: 8px 10px;}
+/*公共管理欢迎和修改密码*/
+.user { width:1302px; height:37px;  margin:0 auto; overflow:hidden; background:url(../images/14.jpg) no-repeat 0 0;}
+.user1 { width:1240px; height:35px; line-height:35px; text-indent:20px; margin:0 20px 0 60px; border:1px solid #dcdcdc; background-color:#f4f4f4;}
+.user1 span { float:left;}
+.user1 a { float:right; _float:right; margin-right:20px;}

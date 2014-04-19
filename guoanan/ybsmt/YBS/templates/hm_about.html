@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>云存储管理系统</title>
+<script type="text/javascript" src="/static/scripts/jquery-1.8.0.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/styles/style2.css" />
+<link type="text/css" rel="stylesheet" href="/static/styles/slide1.css"/>
+<link rel="stylesheet" type="text/css" href="/static/styles/menu.css">
+<script type="text/javascript">
+    $(function () {
+	 //左侧导航伸缩
+        $('.slides_ul li:odd').css("background-color", "#f1f1f1"); //菜单栏隔行变色
+        //jquery 链式操作 点击事件
+        $('.menu').click(function () {
+            // jQ slideToggle方法 段落滑上或滑下,stop():停止当前正在运行的动画
+            $(this).siblings('.selectSlide').stop().slideToggle(200);
+            if($(this).hasclass("close"))
+            {
+                $(this).removeClass("close").addClass("on");
+            }
+            else
+            {
+                $(this).removeClass("on").addClass("close");
+            }
+        });
+
+        $('#showall').click(function () {
+            $('.selectSlide').stop().slideDown();//jQ slideDown() 段落滑下
+            $('.menu').removeClass("close").addClass("on");
+            $(this).removeClass("span1").addClass("span1on");
+            $('#closeall').removeClass("span2").addClass("span2on");
+
+        });
+        $('#closeall').click(function () {
+            $('.selectSlide').stop().slideUp();
+            $('.menu').removeClass("on").addClass("close");
+            $(this).removeClass("span2on").addClass("span2");
+            $('#showall').removeClass("span1on").addClass("span1");
+        });
+        $('.slides_ul li').mousemove(function () {
+            $('.menu_over').eq($(this).index()).show().siblings('.menu_over').hide();
+        });
+        $('.slides').mouseleave(function(){
+            $('.menu_over').hide();
+        });
+		{% if error_info %}
+			alert("{{  error_info }}")
+		{% endif %}
+    });
+</script>
+</head>
+
+<body>
+<!--头文件开始-->
+{% include 'header.html' %}
+<!--头文件结束-->
+
+
+
+<!--主体部分开始-->
+<div class="nr">
+<!--左侧导航开始-->
+<div class="left">
+    <div class="topTitle">
+        <span class="STYLE2">获取帮助</span>
+    </div>
+    <div class="slides_center">
+        <ul class="slides_ul">
+            <li>
+                <a class="menu first close" href="/hm_introductions/" />使用说明</a>
+			</li>
+             <li>
+                <a class="menu first close" style="text-decoration: underline;" href="/hm_about/" />关于</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="tabCon">  
+<div id="tabCon1">
+<div class="target">
+<div class="caption"><span>关于</span></div>
+<div class="clear"></div>
+<table>
+<table border="0" cellspacing="0" cellpadding="0" class="index_table">
+  <tr class="index_title"> 
+    <td colspan="2" class="index_line4">系统概况</td>
+    </tr>
+  <tr class="index_title1">
+    <td width="90" class="index_line1 index_ac">主机名称</td>
+    <td width="871" class="index_line2 index_ti">YuGuang_storge</td>
+  </tr>
+  <tr class="index_title2">
+    <td width="90" height="26" class="index_line1 index_ac">系统版本</td>
+    <td width="871" height="26" class="index_line2 index_ti">V1.1</td>
+  </tr>
+  <tr class="index_title1">
+    <td width="90" height="110" class="index_line1 index_ac">模块版本</td>
+    <td width="871" height="110" class="index_line2 index_ti">
+	YITG模块：&nbsp;{{ about.yitg_version }}<br>
+	&nbsp;&nbsp;&nbsp;YMAS模块：&nbsp;{{ about.YMAS_version }}<br>
+	&nbsp;&nbsp;&nbsp;YSNY模块：&nbsp;{{ about.YSNY_version }}<br>
+	&nbsp;&nbsp;&nbsp;YBSMT模块:&nbsp;{{ about.YBSMT_version }}</td>
+  </tr>
+  <tr class="index_title2">
+    <td width="90" height="190" class="index_line3 index_ac">主机信息</td>
+    <td width="871" height="190" class="index_ti">主机IP：{{ about.ip }}<br>&nbsp;&nbsp;&nbsp;cpu_info:{{ about.cpu_info }}<br>&nbsp;&nbsp;&nbsp;phy_addr:{{ about.phy_addr }}
+	</td>
+  </tr>
+</table>
+</table>
+</div>
+    </div>  
+<!--<div id="tabCon2" style="display:none">&nbsp;</div>  
+    <div id="tabCon3" style="display:none">&nbsp;</div>  
+    <div id="tabCon4" style="display:none">&nbsp;</div>-->   
+</div>
+</div>
+
+
+
+</div>
+<!--主体部分结束-->
+
+</div>
+<!--主题结束-->
+
+
+<!--底部开始-->
+{% include 'bottom.html' %}
+<!--底部结束-->
+</body>
+</html>

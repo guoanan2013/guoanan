@@ -1,0 +1,323 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>云存储管理系统</title>
+<script type="text/javascript" src="/static/scripts/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="/static/scripts/jquery-ui-datepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/styles/style2.css" />
+<link type="text/css" rel="stylesheet" href="/static/styles/slide1.css"/>
+<link rel="stylesheet" type="text/css" href="/static/styles/menu.css">
+<link rel="stylesheet" type="text/css" href="/static/styles/jquery-ui.css" />
+<script type="text/javascript" src="/static/scripts/page.js"  charset="utf-8"></script>
+<script type="text/javascript">
+//过滤条件，定义全局变量，同一传到后台
+    $(function () {
+	 //左侧导航伸缩
+        $('.slides_ul li:odd').css("background-color", "#f1f1f1"); //菜单栏隔行变色
+        //jquery 链式操作 点击事件
+        $('.menu').click(function () {
+            // jQ slideToggle方法 段落滑上或滑下,stop():停止当前正在运行的动画
+            $(this).siblings('.selectSlide').stop().slideToggle(200);
+            if($(this).hasclass("close"))
+            {
+                $(this).removeClass("close").addClass("on");
+            }
+            else
+            {
+                $(this).removeClass("on").addClass("close");
+            }
+        });
+
+        $('#showall').click(function () {
+            $('.selectSlide').stop().slideDown();//jQ slideDown() 段落滑下
+            $('.menu').removeClass("close").addClass("on");
+            $(this).removeClass("span1").addClass("span1on");
+            $('#closeall').removeClass("span2").addClass("span2on");
+
+        });
+        $('#closeall').click(function () {
+            $('.selectSlide').stop().slideUp();
+            $('.menu').removeClass("on").addClass("close");
+            $(this).removeClass("span2on").addClass("span2");
+            $('#showall').removeClass("span1on").addClass("span1");
+        });
+        $('.slides_ul li').mousemove(function () {
+            $('.menu_over').eq($(this).index()).show().siblings('.menu_over').hide();
+        });
+        $('.slides').mouseleave(function(){
+            $('.menu_over').hide();
+        });
+
+		
+		
+		$('#warn_record').change(function(){
+		
+			if($('#warn_record').get(0).selectedIndex=='1')
+			{
+				$('#audit_time').show();
+				$("#check_time").attr("checked",true); //设置一个CheckBox的状态为选中(checked=true)
+			}
+			else if($('#warn_record').get(0).selectedIndex=='2')
+			{
+				$('#audit_user').show();
+				$("#check_user").attr("checked",true);
+				//设置一个CheckBox的状态为选中(checked=true)
+			}
+			else if($('#warn_record').get(0).selectedIndex=='3')
+			{
+				$('#audit_result').show();
+				$("#check_result").attr("checked",true); //设置一个CheckBox的状态为选中(checked=true)
+			}
+		});
+		
+		//判断过滤复选框未被选中 隐藏Div
+		$('#check_time').click(function()
+		{
+			if($('#check_time').is(':checked')==false) 
+			{
+				$('#audit_time').hide();
+			}
+		});
+		$('#check_user').click(function()
+		{
+			if($('#check_user').is(':checked')==false) 
+			{
+					$('#audit_user').hide();
+			}
+		});
+		$('#check_result').click(function()
+		{
+			if($('#check_result').is(':checked')==false) 
+			{
+					$('#audit_result').hide();
+			}
+		});
+		
+	
+
+	$("#date_1").datepicker({
+		onSelect: function(dateText,inst){
+		var check_time = dateText + "%";
+		var str = '{% url "au_search" %}?check_time=' + check_time+ '&check_user=' +"%"+ '&check_result='+"%";
+		window.location.replace(str);
+		}
+	});
+	
+	
+	// 过滤
+	$('#select_user').change(function(){
+		var check_user=$("#select_user").find("option:selected").text();
+		var str = '{% url "au_search" %}?check_time=' +"%" + '&check_user=' +check_user+ '&check_result='+"%";
+		window.location.replace(str);
+		});
+	$('#select_result').change(function(){
+		var check_result=$("#select_result").find("option:selected").text();
+		var str = '{% url "au_search" %}?check_time=' +"%" + '&check_user=' +"%"+ '&check_result='+check_result;
+		window.location.replace(str);
+	});
+{% if error_info %}
+		alert("{{  error_info }}")
+{% endif %}
+goPage(1,10);
+});
+</script>
+<script type="text/javascript">
+<!--
+var timeout         = 500;
+var closetimer		= 0;
+var ddmenuitem      = 0;
+
+// open hidden layer
+function mopen(id)
+{	
+	// cancel close timer
+	mcancelclosetime();
+
+	// close old layer
+	if(ddmenuitem) ddmenuitem.style.visibility = 'hidden';
+
+	// get new layer and show it
+	ddmenuitem = document.getElementById(id);
+	ddmenuitem.style.visibility = 'visible';
+
+}
+// close showed layer
+function mclose()
+{
+	if(ddmenuitem) ddmenuitem.style.visibility = 'hidden';
+}
+
+// go close timer
+function mclosetime()
+{
+	closetimer = window.setTimeout(mclose, timeout);
+}
+
+// cancel close timer
+function mcancelclosetime()
+{
+	if(closetimer)
+	{
+		window.clearTimeout(closetimer);
+		closetimer = null;
+	}
+}
+
+// close layer when click-out
+document.onclick = mclose; 
+// -->
+</script>
+</head>
+
+<body>
+<!--头文件开始-->
+ {% include 'header.html' %}
+<!--头文件结束-->
+
+<!--主体部分开始-->
+<div class="nr">
+<!--左侧导航开始-->
+<div class="left">
+    <div class="topTitle">
+        <span class="STYLE2">审计管理</span>
+    </div>
+    <div class="slides_center">
+        <ul class="slides_ul">
+            <li>
+                <a  href="/auditors/" class="menu first close" style="text-decoration: underline;" class="none">审计信息</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!--左侧导航结束-->
+
+<!--主体开始-->
+<div class="tabCon">  
+<div id="tabCon1">
+<div class="target">
+<div class="caption"><span>审计信息</span><a href="/export/">导出</a></div>
+<div class="clear"></div>
+
+
+<div style="margin-left:805px">增加过滤条件:&nbsp;&nbsp;&nbsp;<select id="warn_record" name="warn_record" style="width:120px; height:23px;">
+						<option value='0'></option>
+						<option value='1'>过滤时间</option>
+						<option value='2'>操作员</option>
+						<option value='3'>操作结果</option>
+</select>
+</div>
+<div style="height:2px"></div>
+
+<!--过滤条件开始-->
+<div style="height:2px"></div>
+
+
+<div id="audit_time" style="display:none;">
+<table>
+<tr>
+<td><input id="check_time" name="" type="checkbox" value="" style="height:15px;width:15px;"/ checked="checked">&nbsp;&nbsp;&nbsp;
+
+操作时间:&nbsp;&nbsp;&nbsp; <input type="text" id="date_1" style="width:110px; height:16px;" readonly />
+</td>
+</tr>
+</table>
+</div>
+<div style="height:10px"></div>
+
+
+
+<div style="height:2px"></div>
+
+<div id="audit_user" style="display:none;">
+<table>
+<tr>
+<td><input id="check_user" name="node_ip" type="checkbox" value="" style="height:15px;width:15px;" />&nbsp;&nbsp;&nbsp;
+
+操作员:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<select id="select_user" name="select_user" style="width:120px; height:23px;">
+						<option></option>
+						{% for dic in audit_user %}
+						<option>{{ dic }}</option>
+						{% endfor %}
+</select>
+</td>
+</tr>
+</table>
+</div>
+<div style="height:2px"></div>
+
+<div id="audit_result" style="display:none;">
+<table>
+<tr>
+<td><input id="check_result" name="node_ip" type="checkbox" value="" style="height:15px;width:15px;" />&nbsp;&nbsp;&nbsp;
+
+操作结果:&nbsp;&nbsp;&nbsp;
+     <select id="select_result" name="select_result" style="width:120px; height:23px;">
+						<option></option>
+						<option>sucess</option>
+						<option>falied</option>
+</select>
+</td>
+</tr>
+</table>
+</div>
+
+<table id="idData">
+<thead> 
+<tr>
+<th style="width:180px;">记录时间</th>
+<th style="width:120px;">操作员</th>
+<th style="width:130px;">操作类型</th>
+<th style="width:120px;">操作对象</th>
+<th style="width:230px;">对象属性</th>
+<th style="width:120px;">结果</th>
+<th style="width:119px;">备注</th>
+</tr>
+</thead> 
+<tbody id="tab">
+{% for dic in audit_info %}
+<tr class="color1">
+<td style="width:180px;">{{ dic.time }}</td>
+<td style="width:120px;">{{ dic.user }}</td>
+<td style="width:130px;">{{ dic.operationType }}</td>
+<td style="width:120px;">{{ dic.targetType }}</td>
+<td style="width:230px;">{{ dic.attribute }}</td>
+<td style="width:120px;">{{ dic.result }}</td>
+<td style="width:119px;">&nbsp;</td>
+</tr>
+{% endfor %}
+
+</tbody> 
+</table>
+
+<table>
+
+<tr>
+
+<td>
+
+<div id="barcon" name="barcon"></div>
+
+</td>
+
+</tr>
+
+</table>
+</div>
+    </div>  
+<!--<div id="tabCon2" style="display:none">&nbsp;</div>  
+    <div id="tabCon3" style="display:none">&nbsp;</div>  
+    <div id="tabCon4" style="display:none">&nbsp;</div>-->   
+</div>
+
+</div>
+</div>
+<!--主题结束-->
+<!--主题结束-->
+
+
+<!--底部开始-->
+{% include 'bottom.html' %}
+<!--底部结束-->
+</body>
+</html>

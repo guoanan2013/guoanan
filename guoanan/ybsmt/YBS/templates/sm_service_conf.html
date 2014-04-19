@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>云存储管理系统</title>
+<script type="text/javascript" src="/static/scripts/jquery-1.8.0.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/styles/style2.css" />
+<link type="text/css" rel="stylesheet" href="/static/styles/slide.css"/>
+<link rel="stylesheet" type="text/css" href="/static/styles/menu.css">
+<script type="text/javascript" src="/static/scripts/page.js"  charset="utf-8"></script>
+<script type="text/javascript">
+    $(function () {
+	 //左侧导航伸缩
+        $('.slides_ul li:odd').css("background-color", "#f1f1f1"); //菜单栏隔行变色
+        //jquery 链式操作 点击事件
+        $('.menu').click(function () {
+            // jQ slideToggle方法 段落滑上或滑下,stop():停止当前正在运行的动画
+            $(this).siblings('.selectSlide').stop().slideToggle(200);
+            if($(this).hasclass("close"))
+            {
+                $(this).removeClass("close").addClass("on");
+            }
+            else
+            {
+                $(this).removeClass("on").addClass("close");
+            }
+        });
+
+        $('#showall').click(function () {
+            $('.selectSlide').stop().slideDown();//jQ slideDown() 段落滑下
+            $('.menu').removeClass("close").addClass("on");
+            $(this).removeClass("span1").addClass("span1on");
+            $('#closeall').removeClass("span2").addClass("span2on");
+
+        });
+        $('#closeall').click(function () {
+            $('.selectSlide').stop().slideUp();
+            $('.menu').removeClass("on").addClass("close");
+            $(this).removeClass("span2on").addClass("span2");
+            $('#showall').removeClass("span1on").addClass("span1");
+        });
+        $('.slides_ul li').mousemove(function () {
+            $('.menu_over').eq($(this).index()).show().siblings('.menu_over').hide();
+        });
+        $('.slides').mouseleave(function(){
+            $('.menu_over').hide();
+        });
+		{% if error_info %}
+			alert("{{  error_info }}")
+		{% endif %}
+		goPage(1,10);
+    });
+
+</script>
+<script type="text/javascript">
+<!--
+var timeout         = 500;
+var closetimer		= 0;
+var ddmenuitem      = 0;
+
+// open hidden layer
+function mopen(id)
+{	
+	// cancel close timer
+	mcancelclosetime();
+
+	// close old layer
+	if(ddmenuitem) ddmenuitem.style.visibility = 'hidden';
+
+	// get new layer and show it
+	ddmenuitem = document.getElementById(id);
+	ddmenuitem.style.visibility = 'visible';
+
+}
+// close showed layer
+function mclose()
+{
+	if(ddmenuitem) ddmenuitem.style.visibility = 'hidden';
+}
+
+// go close timer
+function mclosetime()
+{
+	closetimer = window.setTimeout(mclose, timeout);
+}
+
+// cancel close timer
+function mcancelclosetime()
+{
+	if(closetimer)
+	{
+		window.clearTimeout(closetimer);
+		closetimer = null;
+	}
+}
+
+// close layer when click-out
+document.onclick = mclose; 
+// -->
+</script>
+</head>
+
+<body>
+<!--头文件开始-->
+ {% include 'header.html' %}
+<!--头文件结束-->
+
+<!--主体部分开始-->
+<div class="nr">
+<!--左侧导航开始-->
+<div class="left">
+    <div class="topTitle">
+        <span class="STYLE2">存储管理</span>
+    </div>
+    <div class="slides_center">
+        <ul class="slides_ul">
+            <li>
+                <a class="menu first close">IP_SAN管理</a>
+
+                <div class="selectSlide hide">
+                    <span><a href="/sm_ip_san/" class="none">目标器列表</a></span>
+                </div>
+				 <div class="selectSlide hide">
+					<span><a href="/sm_add_target/" class="none">添加目标器</a></span>
+                </div>
+				 <div class="selectSlide hide">
+					<span><a href="/sm_recover_target/" class="none">恢复目标器</a></span>
+                </div>
+            </li>
+<li>
+	<a class="menu first close">FC_SAN管理</a>
+
+	<div class="selectSlide hide">
+		<span><a href="/sm_fc_san/" class="none">连接管理</a></span>
+	</div>
+	 <div class="selectSlide hide">
+		<span><a href="/sm_lun_assign/" class="none">LUN分配</a></span>
+	</div>
+</li>
+<li>
+	<a class="menu first close">服务配置</a>
+	<div class="selectSlide">
+		<span><a href="/sm_service_conf/" style="text-decoration: underline;" class="none">iSCSI服务</a></span>
+	</div>
+	 <div class="selectSlide">
+		<span><a href="/sm_fc_service/" class="none">FC服务</a></span>
+	</div>
+</li>
+    </ul>
+    </div>
+
+</div>
+<!--左侧导航结束-->
+<div class="tabCon">  
+<div id="tabCon1">
+<div class="target">
+<div class="caption"><span>iSCSI服务</span></div>
+<div class="clear"></div>
+<table id="idData">
+<thead> 
+<tr>
+<th style="width:250px;">节点序号</th>
+<th style="width:250px;">物理节点IP</th>
+<th style="width:250px;">iSCSI服务状态</th>
+<th style="width:281px;">操作</th>
+</tr>
+</thead> 
+<tbody id="tab">
+{% for dic in iscsi_list %}
+<tr class="color1">
+<td style="width:250px;">{{ dic.id }}</td>
+<td style="width:250px;">{{ dic.ip }}</td>
+<td style="width:250px;">{{ dic.tgt_status }}</td>
+<td style="width:281px;"><a href= '{% url "sm_service_conf_action" %}?ip={{ dic.ip }}&tgt_status={{ dic.tgt_status }}' class="none">修改状态</a></td>
+</tr>
+{% endfor %}
+</tbody> 
+</table>
+
+
+<table>
+
+<tr>
+
+<td>
+
+<div id="barcon" name="barcon"></div>
+
+</td>
+
+</tr>
+
+</table>
+</div>
+    </div>  
+<!--<div id="tabCon2" style="display:none">&nbsp;</div>  
+    <div id="tabCon3" style="display:none">&nbsp;</div>  
+    <div id="tabCon4" style="display:none">&nbsp;</div>-->   
+</div>
+</div>
+
+
+
+</div>
+<!--主体部分结束-->
+
+
+
+<!--底部开始-->
+{% include 'bottom.html' %}
+<!--底部结束-->
+</body>
+</html>

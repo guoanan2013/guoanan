@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>云存储管理系统</title>
+<script type="text/javascript" src="/static/scripts/jquery-1.8.0.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/styles/style2.css" />
+<link type="text/css" rel="stylesheet" href="/static/styles/slide.css"/>
+<link rel="stylesheet" type="text/css" href="/static/styles/menu.css">
+<link rel="stylesheet" type="text/css" href="/static/styles/input.css">
+<script type="text/javascript">
+    $(function () {
+	 //左侧导航伸缩
+        $('.slides_ul li:odd').css("background-color", "#f1f1f1"); //菜单栏隔行变色
+        //jquery 链式操作 点击事件
+        $('.menu').click(function () {
+            // jQ slideToggle方法 段落滑上或滑下,stop():停止当前正在运行的动画
+            $(this).siblings('.selectSlide').stop().slideToggle(200);
+            if($(this).hasclass("close"))
+            {
+                $(this).removeClass("close").addClass("on");
+            }
+            else
+            {
+                $(this).removeClass("on").addClass("close");
+            }
+        });
+
+        $('#showall').click(function () {
+            $('.selectSlide').stop().slideDown();//jQ slideDown() 段落滑下
+            $('.menu').removeClass("close").addClass("on");
+            $(this).removeClass("span1").addClass("span1on");
+            $('#closeall').removeClass("span2").addClass("span2on");
+
+        });
+        $('#closeall').click(function () {
+            $('.selectSlide').stop().slideUp();
+            $('.menu').removeClass("on").addClass("close");
+            $(this).removeClass("span2on").addClass("span2");
+            $('#showall').removeClass("span1on").addClass("span1");
+        });
+        $('.slides_ul li').mousemove(function () {
+            $('.menu_over').eq($(this).index()).show().siblings('.menu_over').hide();
+        });
+        $('.slides').mouseleave(function(){
+            $('.menu_over').hide();
+        });
+		
+	var cache_status1=document.getElementById("cache_status1").value;
+	if (cache_status1=='1'){
+	document.getElementById("cache_status").options[0].selected=true;
+	}
+	else{
+	document.getElementById("cache_status").options[1].selected=true;
+	}
+	
+	
+	
+	
+    var cache_flag1=document.getElementById("cache_flag1").value;
+	if(cache_flag1=='-'){
+	document.getElementById("cache_flag").options[0].selected=true;
+	}
+	else if(cache_flag1=='directio'){
+	document.getElementById("cache_flag").options[1].selected=true;
+	}
+	else{
+	document.getElementById("cache_flag").options[2].selected=true;
+	}
+	
+ });
+</script>
+<script type="text/javascript">
+function change_cache(){
+var node_ip = document.getElementById("node_ip").value;
+var cache_dir = document.getElementById("cache_dir").value;
+var cache_size = document.getElementById("cache_size").value;
+
+
+
+//var selvalue = document.getElementByIdx_x("cache_status").selectedIndex;  
+//var cache_status = document.getElementById("cache_status").options[selvalue].text;
+var cache_status = document.getElementById("cache_status").value;
+if(cache_status=='0'){
+cache_status="禁用";
+}
+else{
+cache_status='开启';
+}
+var cache_flag = document.getElementById("cache_flag").value;
+if(cache_flag=='0'){
+cache_flag="-";
+}
+else if(cache_flag=='1'){
+cache_flag="是";
+}
+else{
+cache_flag="否";
+}
+var r=confirm("设置缓存，需要更改节点状态，是否继续？");
+if(r==true){ 
+		var str = '{% url "em_change_cache_action" %}?cache_status=' +cache_status +'&node_ip='+node_ip +'&cache_dir='+cache_dir +'&cache_flag='+cache_flag+'&cache_size='+cache_size;
+		var req = new XMLHttpRequest();
+        req.open("GET", str);
+        req.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+        req.onreadystatechange = function(){
+               if(req.readyState == 4 || req.readyState == 200){
+				var a = eval('['+req.responseText+']')[0];
+				alert(a);
+				}
+}
+req.send(null);
+EV_closeAlert();}
+else{
+
+EV_closeAlert();
+}
+}
+</script>
+</head>
+
+<body>
+<!--头文件开始-->
+ {% include 'header.html' %}
+<!--头文件结束-->
+
+
+
+
+<!--主体部分开始-->
+<div class="nr">
+<!--左侧导航开始-->
+<div class="left">
+    <div class="topTitle">
+        <span class="STYLE2">设备管理</span>
+    </div>
+    <div class="slides_center">
+        <ul class="slides_ul">
+            <li>
+                <a class="menu first close">节点管理</a>
+
+                <div class="selectSlide hide">
+                    <span><a href="/em_nodes/">节点状态</a></span>
+                </div>
+				 <div class="selectSlide hide">
+					<span><a href="/em_add_node/">添加节点</a></span>
+				</div>
+                <div class="selectSlide hide">
+                    <span><a href="/em_zone/">区域配置</a></span>
+                </div>
+            </li>
+			<li>
+                <a class="menu first close">集群管理</a>
+				 <div class="selectSlide">
+					<span><a href="/em_cluster/" style="text-decoration: underline;">缓存配置</a></span>
+				</div>
+			    <div class="selectSlide">
+					<span><a href="/em_shutdown/">关闭集群</a></span>
+				</div>
+            </li>
+
+        </ul>
+    </div>
+</div>
+<!--左侧导航结束-->
+<div class="tabCon">  
+<div id="tabCon1">
+<div class="target">
+<div class="caption"><span>修改缓存</span></div>
+<div class="clear"></div>
+<ol id="need">
+
+<li><label class="td1">  *节点IP地址:&nbsp;</label><input value="{{ cache_info.node_ip }}" name="" id="node_ip" type="text" readonly /><dfn></dfn></li>
+
+
+<li><label class="td1"> &nbsp;*缓存状态:&nbsp;&nbsp;</label>
+<input value="{{ cache_info.cache_status }}" name="" id="cache_status1" type="hidden"/>
+<select name="select" id="cache_status" class="select1">
+                           <option value="0">开启</option>
+						   <option value="1">禁用</option>
+                       </select><dfn></dfn></li>
+
+<li><label class="td1">&nbsp; *缓存大小:&nbsp;</label> <input name="" id="cache_size" type="text" value="{{ cache_info.cache_size }}" /><dfn></dfn></li>
+
+<li><label class="td1"> &nbsp; &nbsp;缓存目录: &nbsp;</label><input id="cache_dir" name="" value="{{ cache_info.cache_dir }}" type="text" /><dfn>(填写正确的文件目录结构)</dfn></li>
+
+<li><label class="td1"> &nbsp;&nbsp;缓存选项: &nbsp;&nbsp;</label>
+<input value="{{ cache_info.cache_flag }}" name="" id="cache_flag1" type="hidden"/>
+<select name="select" id="cache_flag" class="select1">
+<option value="0">-</option>
+<option value="1">是</option>
+<option value="2">否</option></select><dfn>(是否为derect I/O)</dfn></li>
+
+
+<li><a href="javascript:clear()">取消</a><a href="javascript:change_cache()" class="none">确定</a></li>
+</ol>
+
+</div>
+    </div>  
+  
+</div>
+</div>
+
+
+
+</div>
+<!--主体部分结束-->
+
+
+
+
+<!--底部开始-->
+{% include 'bottom.html' %}
+<!--底部结束-->
+</body>
+</html>

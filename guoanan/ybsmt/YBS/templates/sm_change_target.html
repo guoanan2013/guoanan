@@ -1,0 +1,604 @@
+ <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>云存储管理系统</title>
+<link rel="stylesheet" type="text/css" href="/static/styles/style2.css" />
+<link type="text/css" rel="stylesheet" href="/static/styles/slide.css"/>
+<link rel="stylesheet" type="text/css" href="/static/styles/menu.css">
+<link rel="stylesheet" type="text/css" href="/static/styles/style3.css" />
+<script type="text/javascript" src="/static/scripts/jquery-1.8.0.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+	 //左侧导航伸缩
+        $('.slides_ul li:odd').css("background-color", "#f1f1f1"); //菜单栏隔行变色
+        //jquery 链式操作 点击事件
+        $('.menu').click(function () {
+            // jQ slideToggle方法 段落滑上或滑下,stop():停止当前正在运行的动画
+            $(this).siblings('.selectSlide').stop().slideToggle(200);
+            if($(this).hasclass("close"))
+            {
+                $(this).removeClass("close").addClass("on");
+            }
+            else
+            {
+                $(this).removeClass("on").addClass("close");
+            }
+        });
+
+        $('#showall').click(function () {
+            $('.selectSlide').stop().slideDown();//jQ slideDown() 段落滑下
+            $('.menu').removeClass("close").addClass("on");
+            $(this).removeClass("span1").addClass("span1on");
+            $('#closeall').removeClass("span2").addClass("span2on");
+
+        });
+        $('#closeall').click(function () {
+            $('.selectSlide').stop().slideUp();
+            $('.menu').removeClass("on").addClass("close");
+            $(this).removeClass("span2on").addClass("span2");
+            $('#showall').removeClass("span1on").addClass("span1");
+        });
+        $('.slides_ul li').mousemove(function () {
+            $('.menu_over').eq($(this).index()).show().siblings('.menu_over').hide();
+        });
+        $('.slides').mouseleave(function(){
+            $('.menu_over').hide();
+        });
+		{% if error_info %}
+			alert("{{  error_info }}")
+		{% endif %}
+    });
+
+</script>
+<script type="text/javascript"> 
+function closeDiv1() {
+	document.getElementById("popup1").style.display = "none";
+}
+function closeDiv2() {
+	document.getElementById("popup2").style.display = "none";
+}
+function closeDiv3() {
+	document.getElementById("popup3").style.display = "none";
+}
+function switchTab(n){  
+    for(var i=1;i<=1;i++){  
+        G("tab" + i).className = "";  
+        G("tabCon" + i).style.display = "none";  
+    }  
+    G("tab" + n).className = "active";  
+    G("tabCon" + n).style.display = "block";  
+}
+function VerifyInput(str)
+{//将数字与字母结合运用
+strUserID =str;
+for (nIndex=0; nIndex<strUserID.length; nIndex++)
+{//通过循环判断字符串中的每个字符
+cCheck = strUserID.charAt(nIndex);
+
+if (!(IsDigit(cCheck) || IsAlpha(cCheck))){
+return true;
+}
+}
+return false;
+}
+function Messagebox1(){
+document.getElementById("popup1").style.display="block";
+} 
+ function Messagebox2(){
+document.getElementById("popup2").style.display="block";
+} 
+function Messagebox3(){
+document.getElementById("popup3").style.display="block";
+} 
+function VerifyInput1(str)
+{//将数字与字母结合运用
+strUserID =str;
+for (nIndex=0; nIndex<strUserID.length; nIndex++)
+{//通过循环判断字符串中的每个字符
+cCheck = strUserID.charAt(nIndex);
+
+if (!(IsDigit(cCheck) || IsAlpha(cCheck) || cCheck=='-' || cCheck==':' || cCheck=='.' )){
+return true;
+}
+}
+return false;
+}
+function js_modifyipchap(){
+var lu_name = document.getElementById("lu_name").value;
+var lu_ip = document.getElementById("lu_ip").value;
+var new_chap = document.getElementById("lu_passwd").value;
+var chap_name = document.getElementById("chap_name").value;
+
+if (VerifyInput(new_chap)|| new_chap.length>16 || new_chap.length<12 ||chap_name.length<1 ||VerifyInput1(chap_name)){
+	alert("参数输入错误!");
+	EV_closeAlert();
+}
+else{
+		var str = '{% url "sm_modify_ip_chap" %}?lu_name=' +lu_name + '&new_chap=' +new_chap +'&lu_ip='+lu_ip +'&chap_name=' +chap_name;
+		window.location.replace(str);
+	}
+}
+
+function IsDigit(cCheck) { //判断是否是数字
+return (('0'<=cCheck) && (cCheck<='9')); 
+}
+
+function IsAlpha(cCheck) { //判断是否是字母
+return ((('a'<=cCheck) && (cCheck<='z')) || (('A'<=cCheck) && (cCheck<='Z'))) 
+}
+function VerifyInput(str)
+{//将数字与字母结合运用
+strUserID =str;
+for (nIndex=0; nIndex<strUserID.length; nIndex++)
+{//通过循环判断字符串中的每个字符
+cCheck = strUserID.charAt(nIndex);
+
+if (!(IsDigit(cCheck) || IsAlpha(cCheck))){
+return true;
+}
+}
+return false;
+}
+
+function VerifyInput1(str)
+{//将数字与字母结合运用
+strUserID =str;
+for (nIndex=0; nIndex<strUserID.length; nIndex++)
+{//通过循环判断字符串中的每个字符
+cCheck = strUserID.charAt(nIndex);
+
+if (!(IsDigit(cCheck) || IsAlpha(cCheck) || cCheck=='-' || cCheck==':' || cCheck=='.' )){
+return true;
+}
+}
+return false;
+}
+function jsaddlun(){
+var lu_name = document.getElementById("id1").value; 
+var lu_ip = document.getElementById("id2").value; 
+var lun_name = document.getElementById("lun_name").value;
+var lun_size = document.getElementById("lun_size").value;
+var index = document.getElementById("select3").selectedIndex;
+if(index==0){
+	if(parseInt(lun_size)>4194304){
+		alert("虚拟磁盘大小最多是4T!");
+		EV_closeAlert();
+	}
+	else{
+		lun_size = lun_size+'M';
+		if(lu_name=="" || lu_ip=="" || lun_name.length<1 || lun_size=="" || VerifyInput(lun_name) || !IsDigit(lun_size))
+		{
+			alert("参数输入错误！");
+			EV_closeAlert();
+		}
+		else{
+			var str = '{% url "sm_addlun" %}?lun_name=' +lun_name + '&lun_size=' +lun_size+'&lu_name=' +lu_name +'&lu_ip=' +lu_ip;
+			window.location.href=str;
+		}
+	}
+}
+if(index==1){
+	if(parseInt(lun_size)>4096){
+		alert("虚拟磁盘大小最多是4T!");
+		EV_closeAlert();
+	}
+	else{
+		lun_size = lun_size+'G';
+		if(lu_name=="" || lu_ip=="" || lun_name.length<1 || lun_size=="" || VerifyInput(lun_name) || !IsDigit(lun_size))
+		{
+			alert("参数输入错误！");
+			EV_closeAlert();
+		}
+		else{
+			var str = '{% url "sm_addlun" %}?lun_name=' +lun_name + '&lun_size=' +lun_size+'&lu_name=' +lu_name +'&lu_ip=' +lu_ip;
+			window.location.href=str;
+		}
+
+	}
+}
+if (index==2){
+	if(parseInt(lun_size)>4){
+		alert("虚拟磁盘大小最多是4T!");
+		EV_closeAlert();;
+	}
+	else{
+		lun_size = lun_size+'T';
+		if(lu_name=="" || lu_ip=="" || lun_name.length<1 || lun_size=="" || VerifyInput(lun_name) || !IsDigit(lun_size))
+		{
+			alert("参数输入错误！");
+			EV_closeAlert();;
+		}
+		else{
+			var str = '{% url "sm_addlun" %}?lun_name=' +lun_name + '&lun_size=' +lun_size+'&lu_name=' +lu_name +'&lu_ip=' +lu_ip;
+			window.location.href=str;
+		}
+	}
+}
+}
+function add_black() {
+var lu_name = document.getElementById("id1").value; 
+var lu_ip = document.getElementById("id2").value; 
+var black_name = document.getElementById("black_name").value;
+if(lu_name=="" || lu_ip=="" || black_name.length<1 ||VerifyInput1(black_name)){
+	alert("参数输入错误!");
+	EV_closeAlert();
+	}
+else{
+	var str = '{% url "sm_addblack" %}?black_name='+black_name +'&lu_ip='+lu_ip +'&lu_name='+lu_name;
+	window.location.href=str;
+	}
+}
+
+</script>
+
+<script type="text/javascript">
+//定义类
+function People(_name,_age){
+this.name=_name;
+this.age=_age;
+if(typeof this.show !="function" ){
+People.prototype.show=function(){
+return this.name+","+this.age;
+}
+}
+}
+function sort(){
+var str="";
+var ss=[];
+s1 = {property:"name",type:"string",order:"asc"};
+s2 = {property:"name",type:"string",order:"asc"};
+ss.push(s1);
+ss.push(s2);
+
+
+
+//初始化数组
+var tab;
+function initArr(){
+var peoples=new Array();
+tab=document.getElementById("tab");
+for(var i=1;i<document.getElementById("tab").rows.length;i++){
+var p = new People(tab.rows[i].cells[0].innerHTML,tab.rows[i].cells[1].innerHTML);
+peoples.push(p);
+}
+return peoples;
+}
+var peoples=initArr();
+//排序方法
+function mysort(flag){
+peoples.sort(function(a,b){
+return compare(a,b,flag);
+});
+}
+//比较方法
+function compare(a,b,flag){
+var findex=flag[0];
+if(typeof findex != "undefined"){
+var af=a[findex.property];
+var bf=b[findex.property];
+if(findex.order=="desc"){
+if(com(af,bf,findex.type)){
+return -1;
+}else if(af==bf){
+return compare(a,b,flag.slice(1,flag.length));
+}else {
+return 1;
+}
+}else if(findex.order=="asc"){
+if(com(bf,af,findex.type)){
+return -1;
+}else if(af==bf){
+return compare(a,b,flag.slice(1,flag.length));
+}else {
+return 1;
+}
+}
+}else{
+return -1;
+}
+}
+//不同类型的比较
+function com(a,b,type){
+if(type=="string"){
+return a>b;
+}else if(type=="number"){
+return new Number(a)>new Number(b);
+}
+}
+//触发排序
+
+mysort(ss);
+for(var i=1;i<tab.rows.length;i++){
+tab.rows[i].cells[0].innerHTML=peoples[i-1].name;
+tab.rows[i].cells[1].innerHTML=peoples[i-1].age;
+}
+for(var p in peoples){
+str+=peoples[p].show()+"\n";
+}
+}
+
+window.onload = function(){
+sort();
+
+ var oTable = document.getElementById('tableTest');
+        var oTbody = oTable.tBodies[0];
+       // var oBtn = document.getElementById('sort');
+        var arr = [];//用来存放每一个tr
+        var isAsc = true;//用来判断升序，还是降序
+        
+       // oBtn.onclick = function () {
+            for (var i = 1; i < oTbody.rows.length; i++ ) {
+                arr[i] = oTbody.rows[i];//这里是把每一个tr存放到一个数组，而不是排序的依据（这里是cells[0].innerHTML）    
+                }
+                
+            //数组根据cells[0].innerHTML来排序
+            arr.sort(function (td1, td2){
+                if(isAsc) {
+                    return parseInt(td1.cells[1].innerHTML) - parseInt(td2.cells[1].innerHTML);
+                    } else {
+                        return parseInt(td2.cells[1].innerHTML) - parseInt(td1.cells[1].innerHTML);
+                        }
+                
+                });
+            //把排序后的tr 重新插入tbody
+            for(var j =0; j < arr.length; j++ ) {
+                //oTbody.appendChild(arr[j]);
+                }
+            //判断升序，降序
+            isAsc = !isAsc;
+            //} 
+}
+</script>
+</head>
+
+<body>
+<!--头文件开始-->
+ {% include 'header.html' %}
+<!--头文件结束-->
+<!--主体开始-->
+<div class="nr">
+
+<!--左侧导航开始-->
+<div class="left">
+    <div class="topTitle">
+        <span class="STYLE2">存储管理</span>
+    </div>
+    <div class="slides_center">
+        <ul class="slides_ul">
+            <li>
+                <a class="menu first close">IP_SAN管理</a>
+
+                <div class="selectSlide">
+                    <span><a href="/sm_ip_san/" style="text-decoration: underline;">目标器列表</a></span>
+                </div>
+				 <div class="selectSlide">
+					<span><a href="/sm_add_target/">添加目标器</a></span>
+                </div>
+				 <div class="selectSlide">
+					<span><a href="/sm_recover_target/">恢复目标器</a></span>
+                </div>
+            </li>
+<li>
+	<a class="menu first close">FC_SAN管理</a>
+
+	<div class="selectSlide hide">
+		<span><a href="/sm_fc_san/">连接管理</a></span>
+	</div>
+	 <div class="selectSlide hide">
+		<span><a href="/sm_lun_assign/">LUN分配</a></span>
+	</div>
+</li>
+
+<li>
+	<a class="menu first close">服务配置</a>
+	<div class="selectSlide hide">
+		<span><a href="/sm_service_conf/">iSCSI服务</a></span>
+	</div>
+	 <div class="selectSlide hide">
+		<span><a href="/sm_fc_service/">FC服务</a></span>
+	</div>
+</li>
+    </ul>
+    </div>
+
+</div>
+<!--左侧导航结束-->
+<div class="tabCon">  
+<div id="tabCon1">
+<div class="details">
+<div class="caption"><span>目标器详情</span>
+<a href="javascript:Messagebox3()">修改口令</a></div>
+<div class="clear"></div>
+<table>
+  <tr>
+    <td class="details_bg1">目标器名称</td>
+    <td class="details_bg3">{{ lu_info.lu_name }}</td>
+<input type="hidden" id="id1" value={{ lu_info.lu_name }}>
+  </tr>
+  <tr>
+    <td class="details_bg1">Chap名称</td>
+    <td class="details_bg2">{{ lu_info.chap_name }}</td>
+  </tr>
+  <tr>
+    <td class="details_bg1">Chap口令</td>
+    <td class="details_bg2">{{ lu_info.ip_chap }}</td>
+  </tr>
+  <tr>
+    <td class="details_bg1">虚拟磁盘数</td>
+    <td class="details_bg3">{{ lu_info.lun_num }}</td>
+  </tr>
+  <tr>
+    <td class="details_bg1">nodebase</td>
+    <td class="details_bg2">{{ lu_info.nodebase }}</td>
+  </tr>
+  <tr>
+    <td class="details_bg1">目标器节点主IP</td>
+    <td class="details_bg3">{{ lu_info.lu_ip }}</td>
+<input type="hidden" id="id2" value={{ lu_info.lu_ip }}>
+  </tr>
+   <tr>
+    <td class="details_bg1">目标器节点iSCSI的IP</td>
+    <td class="details_bg3"><select name="select" id="selectip" class="select1">
+					  {% for i in lu_info.iscsi_ip %}
+                           <option value="0">{{ i }}</option>
+                       {% endfor %}
+                       </select></td>
+  </tr>
+  <tr>
+    <td class="details_bg1">IP过滤规则</td>
+    <td class="details_bg2">
+	{{ lu_info.ip_filter }}
+    <!--<form id="form1" name="form1" method="get" action="">
+        <select name="select" id="select1">
+            <option value="0">全部</option>
+            <option value="1">本子网可见</option>
+            <option value="1">本子网可见</option>
+        </select>
+    </form>-->
+    </td>
+  </tr>
+</table>
+</div>
+<div class="disk">
+<div class="caption"><span>虚拟磁盘</span><a href="javascript:Messagebox1()">添加</a></div>
+
+<div class="clear"></div>
+<table id="tableTest">
+<tbody id="tab11">
+<tr>
+<th>虚拟磁盘</th>
+<th>LUN</th>
+<th>空间大小</th>
+<th>读写权限</th>
+<th>操作</th>
+</tr> 
+
+{% for a in lun_info %}
+<tr class="color1">
+<td>{{ a.lun_name }}</td>
+<td>{{ a.lun_num }}</td>
+<td>{{ a.lun_size }}</td>
+<td>
+    <form id="form2" name="form2" method="get" action="">
+        <select name="select" id="select2">
+            <option value="0">读写</option>
+        </select>
+    </form>
+</td>
+<td><a href='{% url "sm_dellun" %}?lun_name={{ a.lun_name }}&lu_ip={{ lu_info.lu_ip }} &lu_name={{ lu_info.lu_name }}' class="none">删除</a></td>
+</tr>
+{% endfor %}
+</tbody> 
+</table>
+</div>
+
+<!--<div class="disk">
+<div class="caption"><span>加载器黑名单</span><a href="javascript:Messagebox2()">添加</a></div>
+<div class="clear"></div>
+<table>
+<tbody id="tab">
+
+<tr>
+<th>名称</th>
+<th>操作</th>
+</tr>
+
+{% for a in black_list %}
+<tr>
+<td>{{ a.black_name }}</td>
+<td><a href='{% url "sm_delblack" %}?black_name={{ a.black_name }}&lu_ip={{ lu_info.lu_ip }}&lu_name={{ lu_info.lu_name }}' class="none">删除</a></td>
+</tr>
+{% endfor %}
+</tbody> 
+</table>
+</div>-->
+    </div>  
+<!--<div id="tabCon2" style="display:none">&nbsp;</div>  
+    <div id="tabCon3" style="display:none">&nbsp;</div>  
+    <div id="tabCon4" style="display:none">&nbsp;</div>-->  
+</div>
+</div>
+<div id="popup2" class="box1" style="position:absolute;top:200px;left:600px;display:none">
+<div class="caption1">
+<span>增加黑名单</span><a href="javascript:closeDiv2()">关闭</a>
+</div>
+<table border="0" cellspacing="0" cellpadding="0" class="table1">
+  <tr>
+    <td class="td1"><b>*</b>发起程序名称</td>
+    <td class="td2"><input name="" type="text" id="black_name" maxlength=64  onkeyup="value=value.replace(/[^\a-\z\A-\Z0-9\:\.\-]/g,'')"/></td>
+    <td class="td5"> 1~64个半角字符</td>
+  </tr>
+  <tr>
+    <td colspan="3"><a href="javascript:closeDiv2()">取消</a><a href="javascript:add_black()" class="none">确定</a></td>
+    </tr>
+	<!--<tr>
+    <td colspan="3" class="td5">重启目标器所在节点之后生效</td>
+    </tr>-->
+</table>
+</div>
+
+<div id="popup1" class="box1" style="position:absolute;top:200px;left:600px;display:none">
+<div class="caption1">
+<span>增加虚拟磁盘</span><a href="javascript:closeDiv1()">关闭</a>
+</div>
+<table border="0" cellspacing="0" cellpadding="0" class="table1">
+  <tr>
+    <td class="td4"><b>*</b>名称</td>
+    <td class="td2" colspan="2"><input id="lun_name" name="" type="text" maxlength=16 onkeyup="value=value.replace(/[^\a-\z\A-\Z0-9]/g,'')"/></td>
+    <td class="td5">1~16个半角字符</td>
+  </tr>
+  <tr>
+    <td class="td4"><b>*</b>读写权限</td>
+    <td class="td2" colspan="2"><form id="form1" name="form1" method="get" action="">
+                       <select name="select" id="select1" class="select1">
+                           <option value="0">读写</option>
+                       </select>
+                    </form>
+    </td>
+    <td class="td5">&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="td4"><b>*</b>空间大小</td>
+    <td class="td8"><input id="lun_size" name="" type="text" class="input2"  maxlength=8 onkeyup="this.value=this.value.replace(/[^\d]/g,'')"/></td>
+    <td><select name="select" id="select3" class="select3">
+                           <option value="0">MB</option>
+                           <option value="1">GB</option>
+                           <option value="2">TB</option>
+                       </select></td>
+    <td class="td5">&nbsp;&nbsp;&nbsp;&nbsp;最多为4T</td>
+  </tr>
+  <tr>
+    <td colspan="4"><a href="javascript:closeDiv1()">取消</a><a href="javascript:jsaddlun()" class="none">确定</a></td>
+    </tr>
+</table>
+</div>
+
+<div id="popup3" class="box1" style="position:absolute;top:200px;left:600px;display:none">
+<div class="caption1">
+<span>修改目标器口令</span><a href="javascript:closeDiv3()">关闭</a>
+</div>
+<table border="0" cellspacing="0" cellpadding="0" class="table1">
+  <tr>
+    <td class="td1"><b>&nbsp;</b>Chap名称</td>
+   <td class="td2" colspan="4"><input name="" type="text" id="chap_name" maxlength=64  onkeyup="value=value.replace(/[^\a-\z\A-\Z0-9\:\.\-]/g,'')"/></td>
+    <td class="td3">1~64个半角字符</td>
+  </tr>
+  <tr>
+    <td class="td1"><b>&nbsp;</b>Chap口令</td>
+   <td class="td2" colspan="4"><input name="" id="lu_passwd" maxlength=16 onkeyup="value=value.replace(/[^\a-\z\A-\Z0-9]/g,'')" /></td>
+    <td class="td3">12~16个半角字符</td>
+  </tr>
+  <tr>
+    <td colspan="6"><a href="javascript:closeDiv3()">取消</a><a href="javascript:js_modifyipchap()" class="none">确定</a></td>
+    </tr>
+</table>
+</div>
+<!--主题结束-->
+<input type="hidden" id="lu_ip" value={{ lu_info.lu_ip }}>
+<input type="hidden" id="lu_name" value={{ lu_info.lu_name }}>
+<!--底部开始-->
+{% include 'bottom.html' %}
+<!--底部结束-->
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>云存储管理系统</title>
+<link rel="stylesheet" type="text/css" href="/static/styles/style1.css" />
+<script type="text/javascript">  
+window.onload = function(){
+        {% if error_info %}
+        alert("{{  error_info }}")
+{% endif %}
+}
+function reset(){
+	document.getElementById("name").value="";
+	document.getElementById("password").value=""; 
+}
+</script>
+</head>
+
+<body>
+<!--头文件开始-->
+<div class="top">
+<div class="top1">
+<span>系统版本：V1.1</span>
+</div>
+</div>
+<!--头文件结束-->
+<!--主体开始-->
+<div class="center">
+<div class="login">
+<form id="form1" name="form1" method="get" action="/login/">
+<div class="login_nr1">
+<span><input name="name" class="correct" maxlength="16" id="name" onkeyup="value=value.replace(/[^\w]/g,'') "onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\w]/g,''))"/><h5>&nbsp;</h5></span>
+<span><input type = "password" name="passwd" class="error" maxlength="16" id="password" onkeyup="value=value.replace(/[\W]/g,'') "onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))"/><h5>6~16个半角字符</h5></span>
+</div>
+<div class="login_nr2">
+<div class="dot1"><input type="submit" name="login" id="button" value="&nbsp" /></div>
+</form>
+
+<form id="form2" name="form2" method="get" action="javascript:reset()">
+<div class="dot2"><input type="submit" id="button" name="reset_login" value="&nbsp" /></div>
+</div>
+</form>
+
+
+</div>
+<div class="feature"></div>
+</div>
+<!--主题结束-->
+<!--底部开始-->
+<div class="btttom">版权所有&nbsp;&copy;&nbsp;2014 哈尔滨 虚拟网络技术有限公司</div>
+<!--底部结束-->
+</body>
+</html>

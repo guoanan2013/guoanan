@@ -1,0 +1,31 @@
+@charset "utf-8";
+/* CSS Document */
+*, html, body, div, ul, li, span, p, img, b, input { margin:0; padding:0;}
+ul, li { list-style-type:none;}
+.clear { clear:both;}
+/*body { font-size:12px; color:#626262; font-family:"微软雅黑"，"宋体"，Arial, Helvetica, sans-serif;}*/
+a:focus { outline:none;}
+a { color:#626262; text-decoration:none; blr:expression(this.onFocus=this.blur()); outline:none;}
+a:hover { color:#5b9300; text-decoration:none; blr:expression(this.onFocus=this.blur()); outline:none;}
+a:active { color:#5b9300; text-decoration:none; blr:expression(this.onFocus=this.blur()); outline:none;}
+
+.box1 { width:600px; height:auto; background-color:#f4f4f4;; border:1px solid #dcdcdc;}
+.caption1 { width:600px; height:30px; line-height:30px; background-color:#e5e5e5; font-size:14px; text-indent:15px;}
+.caption1 span { float:left;}
+.caption1 a { float:right; margin-right:15px;}
+.table1 { width:570px; height:auto; margin:15px auto; text-align:left; border-collapse:collapse;}
+.tr { height:26px; line-height:26px;}
+.td1 { width:115px;}
+b { color:#f26c4f; margin-right:3px;}
+.td2 { width:165px;}
+.td3 { width:290px; height:26px; line-height:26px; font-weight:normal; overflow:hidden; color:#f26c4f;}
+.td4 { width:125px;}
+.td5 { width:340px; height:26px; line-height:26px; font-weight:normal; overflow:hidden; color:#f26c4f;}
+.td6 { width:80px;}
+.td7 { width:300px; height:26px; line-height:26px; font-weight:normal; overflow:hidden; color:#f26c4f;}
+.input1 { width:30px;}
+.select1 { width:153px;}
+.select2 { width:70px;}
+.table1 a { width:63px; height:27px; line-height:27px; background:url(../images/17.png) no-repeat 0 0; _background:url(../images/17.jpg) no-repeat 0 0; display:block; color:#fff; text-align:center; font-size:12px; font-weight:normal; text-indent:0px; float:right; margin-right:10px;}
+.table1 a:hover { width:63px; height:27px; line-height:27px; background:url(../images/17.png) no-repeat 0 -27px; _background:url(../images/17.jpg) no-repeat 0 -27px; display:block; color:#fff;}
+.table1 a:active { width:63px; height:27px; line-height:27px; background:url(../images/17.png) no-repeat 0 0; _background:url(../images/17.jpg) no-repeat 0 0; display:block; color:#fff;}

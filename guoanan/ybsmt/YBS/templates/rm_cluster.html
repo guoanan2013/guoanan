@@ -1,0 +1,256 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>云存储管理系统</title>
+<script type="text/javascript" src="/static/scripts/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="/static/scripts/jquery.flot.min.js"></script>
+<script type="text/javascript" src="/static/scripts/socketclient.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/styles/style2.css" />
+<link type="text/css" rel="stylesheet" href="/static/styles/slide1.css"/>
+<link rel="stylesheet" rel="stylesheet" href="/static/styles/graph.css" />
+<link rel="stylesheet" type="text/css" href="/static/styles/menu.css">
+<script type="text/javascript">
+    $(function () {
+        $('.slides_ul li:odd').css("background-color", "#f1f1f1"); //菜单栏隔行变色
+        //jquery 链式操作 点击事件
+        $('.menu').click(function () {
+            // jQ slideToggle方法 段落滑上或滑下,stop():停止当前正在运行的动画
+            $(this).siblings('.selectSlide').stop().slideToggle(200);
+            if($(this).hasclass("close"))
+            {
+                $(this).removeClass("close").addClass("on");
+            }
+            else
+            {
+                $(this).removeClass("on").addClass("close");
+            }
+        });
+
+        $('#showall').click(function () {
+            $('.selectSlide').stop().slideDown();//jQ slideDown() 段落滑下
+            $('.menu').removeClass("close").addClass("on");
+            $(this).removeClass("span1").addClass("span1on");
+            $('#closeall').removeClass("span2").addClass("span2on");
+
+        });
+        $('#closeall').click(function () {
+            $('.selectSlide').stop().slideUp();
+            $('.menu').removeClass("on").addClass("close");
+            $(this).removeClass("span2on").addClass("span2");
+            $('#showall').removeClass("span1on").addClass("span1");
+        });
+        $('.slides_ul li').mousemove(function () {
+            $('.menu_over').eq($(this).index()).show().siblings('.menu_over').hide();
+        });
+        $('.slides').mouseleave(function(){
+            $('.menu_over').hide();
+        });
+    });
+
+</script>
+<script type="text/javascript" >
+
+
+
+$(document).ready(function () {
+var client = new SocketClient("192.168.2.183",33013,"chat");
+
+client.connect();
+
+client.onData  = function(text) {
+console.log(text);
+
+var cpu=new Array(10);
+var mem=new Array(10);
+var disk=new Array(10);
+
+var objs=eval(text);
+
+cpu=objs[0];
+mem=objs[1];
+disk=objs[2];
+
+// Graph Data ##############################################
+	var graphData = [{
+			// CPU
+			//data: [ [1, 1.11],[2, 2.23],[3, 3.32],[4, 10.23],[5,3.25],[6,5.23],[7, 90.23],[8, 40.78],[9, 45.34],[10,12.00],[11,32.24],[12,42.21],[13,45.32],[14,45.45],[15,32.21]],
+			//data: [ [current[0], cpu[0]], [current[1], cpu[1]], [current[2], cpu[2]], [current[3], cpu[3]], [current[4], cpu[4]], [current[5], cpu[5]], [current[6], cpu[6]], [current[7], cpu[7]], [current[8], cpu[8]],[current[9], cpu[9]]],
+			data: [ [1, cpu[0]], [2, cpu[1]], [3, cpu[2]], [4, cpu[3]], [5, cpu[4]], [6, cpu[5]], [7, cpu[6]], [8, cpu[7]], [9, cpu[8]],[10, cpu[9]],[11, cpu[10]], [12, cpu[11]], [13, cpu[12]], [14, cpu[13]], [15, cpu[14]], [16, cpu[15]], [17, cpu[16]], [18, cpu[17]], [19, cpu[18]],[20, cpu[19]],[21, cpu[20]], [22, cpu[21]], [23, cpu[22]], [24, cpu[23]], [25, cpu[24]], [26, cpu[25]], [27, cpu[26]], [28, cpu[27]], [29, cpu[28]],[30, cpu[29]],[31, cpu[30]], [32, cpu[31]], [33, cpu[32]], [34, cpu[33]], [35, cpu[34]], [36, cpu[35]], [37, cpu[36]], [38, cpu[37]], [39, cpu[38]],[40, cpu[39]]],
+			
+			color: '#71c73e',
+		}, {
+			// MEM
+			data: [ [1, mem[0]], [2, mem[1]], [3, mem[2]], [4, mem[3]], [5, mem[4]], [6, mem[5]], [7, mem[6]], [8, mem[7]], [9, mem[8]],[10, mem[9]],[11, mem[10]], [12, mem[11]], [13, mem[12]], [14, mem[13]], [15, mem[14]], [16, mem[15]], [17, mem[16]], [18, mem[17]], [19, mem[18]],[20, mem[19]],[21, mem[20]], [22, mem[21]], [23, mem[22]], [24, mem[23]], [25, mem[24]], [26, mem[25]], [27, mem[26]], [28, mem[27]], [29, mem[28]],[30, mem[29]],[31, mem[30]], [32, mem[31]], [33, mem[32]], [34, mem[33]], [35, mem[34]], [36, mem[35]], [37, mem[36]], [38, mem[37]], [39, mem[38]],[40, mem[39]]],
+			color: '#77b7c5',
+			//points: { radius: 4, fillColor: '#77b7c5' }
+		},
+		{
+			// dISK
+		data: [ [1, disk[0]], [2, disk[1]], [3, disk[2]], [4, disk[3]], [5, disk[4]], [6, disk[5]], [7, disk[6]], [8, disk[7]], [9, disk[8]],[10, disk[9]],[11, disk[10]], [12, disk[11]], [13, disk[12]], [14, disk[13]], [15, disk[14]], [16, disk[15]], [17, disk[16]], [18, disk[17]], [19, disk[18]],[20, disk[19]],[21, disk[20]], [22, disk[21]], [23, disk[22]], [24, disk[23]], [25, disk[24]], [26, disk[25]], [27, disk[26]], [28, disk[27]], [29, disk[28]],[30, disk[29]],[31, disk[30]], [32, disk[31]], [33, disk[32]], [34, disk[33]], [35, disk[34]], [36, disk[35]], [37, disk[36]], [38, disk[37]], [39, disk[38]],[40, disk[39]]],
+			color: '#FF3300',
+			//points: { radius: 4, fillColor: '#FF3300' }
+		}
+	];
+
+	// Lines Graph #############################################
+	$.plot($('#graph-lines'), graphData, {
+		series: {
+			points: {
+				show: true,
+				radius: 2
+			},
+			lines: {
+				show: true
+			},
+			shadowSize: 0
+		},
+		grid: {
+			color: '#646464',
+			borderColor: 'transparent',
+			borderWidth: 20,
+			hoverable: true
+		},
+		xaxis: {
+			tickColor: 'transparent',
+			//tickDecimals: 2
+		},
+		yaxis: {
+			tickSize: 5
+		}
+	});
+
+	// Bars Graph ##############################################
+	$.plot($('#graph-bars'), graphData, {
+		series: {
+			bars: {
+				show: true,
+				barWidth: .9,
+				align: 'center'
+			},
+			shadowSize: 0
+		},
+		grid: {
+			color: '#646464',
+			borderColor: 'transparent',
+			borderWidth: 20,
+			hoverable: true
+		},
+		xaxis: {
+			tickColor: 'transparent',
+			tickDecimals: 2
+		},
+		yaxis: {
+			tickSize: 5
+		}
+	});
+
+	// Graph Toggle ############################################
+	$('#graph-bars').hide();
+
+	$('#lines').on('click', function (e) {
+		$('#bars').removeClass('active');
+		$('#graph-bars').fadeOut();
+		$(this).addClass('active');
+		$('#graph-lines').fadeIn();
+		e.preventDefault();
+	});
+
+	$('#bars').on('click', function (e) {
+		$('#lines').removeClass('active');
+		$('#graph-lines').fadeOut();
+		$(this).addClass('active');
+		$('#graph-bars').fadeIn().removeClass('hidden');
+		e.preventDefault();
+	});
+
+	// Tooltip #################################################
+	function showTooltip(x, y, contents) {
+		$('<div id="tooltip">' + contents + '</div>').css({
+			top: y - 16,
+			left: x + 10
+		}).appendTo('body').fadeIn();
+	}
+
+	var previousPoint = null;
+
+	$('#graph-lines, #graph-bars').bind('plothover', function (event, pos, item) {
+		if (item) {
+			if (previousPoint != item.dataIndex) {
+				previousPoint = item.dataIndex;
+				$('#tooltip').remove();
+				var x = item.datapoint[0],
+					y = item.datapoint[1];
+					showTooltip(item.pageX, item.pageY, y + '% utilizing rate '+ 3*x + 's ago');
+			}
+		} else {
+			$('#tooltip').remove();
+			previousPoint = null;
+		}
+	});   
+}
+client.onRegist = function() {
+    this.sendData("web message");
+}
+});
+</script>
+<script type="text/javascript">
+</script>
+<style type="text/css">
+<!--
+.STYLE1 {color: #293C22}
+-->
+</style>
+</head>
+
+<body>
+<span class="STYLE1"></span>
+<!--头文件开始-->
+ {% include 'header.html' %}
+<!--头文件结束-->
+
+
+
+<div class="nr">
+<div class="left">
+    <div class="topTitle">
+        <span class="STYLE2">资源监控</span>
+    </div>
+    <!-- 菜单部分 -->
+  <div class="slides_center">
+        <ul class="slides_ul">
+            <li>
+                <a href="/rm_cluster/" class="menu first close" style="text-decoration: underline;">系统监控</a>
+            </li>
+			  <li>
+                <a href="/rm_nodes/" class="menu first close">节点监控</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="tabCon">  
+<div id="tabCon1">
+<div class="target">
+<div class="caption"><span>系统监控</span></div>
+
+<div id="graph-wrapper">
+	<div class="graph-info">
+		<a href="javascript:void(0)" class="visitors">CPU</a>
+		<a href="javascript:void(0)" class="returning">内存</a>
+		<a href="javascript:void(0)" class="disk">磁盘</a></div>
+	<div class="graph-container">
+		<div id="graph-lines">
+		</div>
+	</div>
+	</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!--底部开始-->
+{% include 'bottom.html' %}
+<!--底部结束-->
+</body>
+</html>
